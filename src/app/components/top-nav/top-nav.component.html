@@ -1,0 +1,13 @@
+<mat-toolbar color="primary">
+	<button mat-button [matMenuTriggerFor]="menu">
+		<mat-icon>menu</mat-icon>
+	</button>
+	<mat-menu #menu="matMenu">
+		<button mat-menu-item routerLink="">Show items</button>
+		<button mat-menu-item routerLink="about-this-app">About this test</button>
+		<button mat-menu-item routerLink="about-me">About John Moran</button>
+	</mat-menu>
+
+	<span class="desktop">BMAT code challenge > John Moran</span>
+	<span class="mobile">John Moran</span>
+</mat-toolbar>
