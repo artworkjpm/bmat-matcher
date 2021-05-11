@@ -1,1 +1,71 @@
-<p>database works!</p>
+<div class="container">
+	<div class="left">
+		<h2>Sound Recordings Database</h2>
+		<table>
+			<thead>
+				<tr>
+					<th>#</th>
+					<th>artist</th>
+					<th>title</th>
+					<th>isrc</th>
+					<th>duration</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr *ngFor="let csvData of data; let i = index">
+					<td>{{ i + 1 }}</td>
+					<td>
+						{{ csvData.artist }}
+					</td>
+					<td>
+						{{ csvData.title }}
+					</td>
+					<td>
+						{{ csvData.isrc }}
+					</td>
+					<td>
+						{{ csvData.duration }}
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+
+	<div class="right">
+		<h2>Sound Recordings Candidates</h2>
+		<div class="csv-file-chooser-section">
+			<input type="file" #fileImportInput name="File Upload" id="csvFileUpload" (change)="fileChangeListener($event)" accept=".csv" />
+		</div>
+
+		<div class="csv-result-table">
+			<table>
+				<thead>
+					<tr>
+						<th>#</th>
+						<th>artist</th>
+						<th>title</th>
+						<th>isrc</th>
+						<th>duration</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr *ngFor="let csvData of csvRecords; let i = index">
+						<td>{{ i + 1 }}</td>
+						<td>
+							{{ csvData.artist }}
+						</td>
+						<td>
+							{{ csvData.title }}
+						</td>
+						<td>
+							{{ csvData.isrc }}
+						</td>
+						<td>
+							{{ csvData.duration }}
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>
