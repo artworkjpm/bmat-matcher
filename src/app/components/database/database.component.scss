@@ -1,3 +1,15 @@
 .container {
 	display: flex;
+	> div {
+		margin-right: 20px;
+	}
+}
+th {
+	text-align: left;
+	padding: 5px;
+}
+
+td {
+	text-align: left;
+	padding: 5px;
 }

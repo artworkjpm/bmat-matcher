@@ -1,8 +1,6 @@
-export type Items = {
-  [filterBy: string]: string;
-  title: string;
-  description: string;
-  price: string;
-  email: string;
-  image: string;
+export type Songs = {
+	artist: string;
+	title: string;
+	isrc: string;
+	duration: string;
 };
