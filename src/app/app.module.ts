@@ -11,9 +11,10 @@ import { AboutAppComponent } from "./components/about-app/about-app.component";
 import { AboutMeComponent } from "./components/about-me/about-me.component";
 import { FlexLayoutModule } from "@angular/flex-layout";
 import { FormsModule } from "@angular/forms";
+import { DatabaseComponent } from './components/database/database.component';
 
 @NgModule({
-	declarations: [AppComponent, ItemsComponent, TopNavComponent, AboutAppComponent, AboutMeComponent],
+	declarations: [AppComponent, ItemsComponent, TopNavComponent, AboutAppComponent, AboutMeComponent, DatabaseComponent],
 	imports: [BrowserModule, AppRoutingModule, MaterialModule, BrowserAnimationsModule, HttpClientModule, FlexLayoutModule, FormsModule],
 	bootstrap: [AppComponent],
 })
