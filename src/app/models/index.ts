@@ -3,4 +3,6 @@ export type Songs = {
 	title: string;
 	isrc: string;
 	duration: string;
+	hasArtistAndTitle: boolean;
+	hasArtistAndIRSC: boolean;
 };

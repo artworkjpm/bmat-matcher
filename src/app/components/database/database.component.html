@@ -1,7 +1,55 @@
 <button (click)="startSearch()">Fire match</button>
 <div class="container">
-	<div class="left">
-		<h2>Sound Database</h2>
+	<div class="inputs">
+		<h2>Sound Input Report</h2>
+		<div class="csv-file-chooser-section">
+			<input type="file" #fileImportInput name="File Upload" id="csvFileUpload" (change)="fileChangeListener($event)" accept=".csv" />
+		</div>
+
+		<div class="flex">
+			<div class="csv-result-table">
+				<table>
+					<thead>
+						<tr>
+							<th>#</th>
+							<th>artist</th>
+							<th>title</th>
+							<th>isrc</th>
+							<th>duration</th>
+							<th>Save and Remove</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr *ngFor="let csvData of inputs; let i = index">
+							<td>{{ i + 1 }}</td>
+							<td [ngClass]="{ green: csvData.hasArtistAndTitle }">
+								{{ csvData.artist }}
+							</td>
+							<td [ngClass]="{ green: csvData.hasArtistAndTitle }">
+								{{ csvData.title }}
+							</td>
+							<td [ngClass]="{ orange: csvData.hasArtistAndIRSC }">
+								{{ csvData.isrc }}
+							</td>
+							<td>
+								{{ csvData.duration }}
+							</td>
+							<td>
+								<mat-icon aria-hidden="false" aria-label="clear" (click)="remove(i)">clear</mat-icon>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+
+			<div>
+				<p>We found {{ artistAndTitle.length }} that match ARTIST and TITLE</p>
+			</div>
+		</div>
+	</div>
+
+	<div class="data">
+		<h2>Sound Recordings Database</h2>
 		<table>
 			<thead>
 				<tr>
@@ -30,43 +78,5 @@
 				</tr>
 			</tbody>
 		</table>
-	</div>
-
-	<div class="right">
-		<h2>Sound Inputs</h2>
-		<div class="csv-file-chooser-section">
-			<input type="file" #fileImportInput name="File Upload" id="csvFileUpload" (change)="fileChangeListener($event)" accept=".csv" />
-		</div>
-
-		<div class="csv-result-table">
-			<table>
-				<thead>
-					<tr>
-						<th>#</th>
-						<th>artist</th>
-						<th>title</th>
-						<th>isrc</th>
-						<th>duration</th>
-					</tr>
-				</thead>
-				<tbody>
-					<tr *ngFor="let csvData of inputs; let i = index">
-						<td>{{ i + 1 }}</td>
-						<td>
-							{{ csvData.artist }}
-						</td>
-						<td>
-							{{ csvData.title }}
-						</td>
-						<td>
-							{{ csvData.isrc }}
-						</td>
-						<td>
-							{{ csvData.duration }}
-						</td>
-					</tr>
-				</tbody>
-			</table>
-		</div>
 	</div>
 </div>

@@ -14,6 +14,9 @@ export class DatabaseComponent implements OnInit {
 	csvRecords: Songs[] = [];
 	data = data as Songs[];
 	inputs = inputs as Songs[];
+	artistAndTitle: Songs[] = [];
+	artistAndIRSC: Songs[] = [];
+	isMatched = false;
 	constructor(private ngxCsvParser: NgxCsvParser) {}
 
 	@ViewChild("fileImportInput") fileImportInput: any;
@@ -41,13 +44,21 @@ export class DatabaseComponent implements OnInit {
 	} */
 
 	startSearch() {
-		let artists: Songs[] = [];
 		this.inputs.map((item) => {
 			if (this.data.find((a) => a.artist === item.artist && a.title === item.title)) {
-				artists.push(item);
+				this.artistAndTitle.push(item);
+				item.hasArtistAndTitle = true;
+			}
+			if (this.data.find((a) => a.artist === item.artist && a.isrc === item.isrc)) {
+				this.artistAndIRSC.push(item);
+				item.hasArtistAndIRSC = true;
 			}
 		});
 
-		console.log(artists);
+		console.log(this.artistAndTitle);
+	}
+
+	remove(index: number) {
+		this.inputs.splice(index, 1);
 	}
 }

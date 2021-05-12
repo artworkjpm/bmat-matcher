@@ -1,15 +1,33 @@
 .container {
-	display: flex;
-	> div {
-		margin-right: 20px;
-	}
-}
-th {
-	text-align: left;
-	padding: 5px;
+	display: block;
 }
 
+table {
+	border-collapse: collapse;
+	width: 100%;
+}
+
+th,
 td {
 	text-align: left;
-	padding: 5px;
+	border: 1px solid #ddd;
+	padding: 8px;
+}
+
+.flex {
+	display: flex;
+}
+
+.green {
+	background-color: green;
+	color: white;
+}
+
+.orange {
+	background-color: orange;
+	color: white;
+}
+.mat-icon {
+	cursor: pointer;
+	color: red;
 }
