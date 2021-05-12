@@ -1,0 +1,48 @@
+<div class="inputs">
+	<div class="flex">
+		<div class="csv-result-table">
+			<table>
+				<thead>
+					<tr>
+						<th>#</th>
+						<th>Artist</th>
+						<th>Title</th>
+						<th>ISRC</th>
+						<th>Duration</th>
+						<th>Remove</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr *ngFor="let csvData of inputs; let i = index">
+						<td>{{ i + 1 }}</td>
+						<td [ngClass]="{ green: csvData.matchesArtist }">
+							{{ csvData.artist }}
+						</td>
+						<td [ngClass]="{ lightGreen: csvData.matchesTitle }">
+							{{ csvData.title }}
+						</td>
+						<td [ngClass]="{ orange: csvData.matchesISRC }">
+							{{ csvData.isrc }}
+						</td>
+						<td [ngClass]="{ lightOrange: csvData.matchesDuration }">
+							{{ csvData.duration }}
+						</td>
+						<td style="text-align: center">
+							<mat-icon aria-hidden="false" aria-label="clear" (click)="remove(i)">clear</mat-icon>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+
+		<div class="controls">
+			<p>Sound Recordings Database Matches:</p>
+			<section>
+				<mat-checkbox class="greenChecked" [(ngModel)]="checkedArtist" (change)="toggleArtist()">Artist ({{ artist.length }})</mat-checkbox>
+				<mat-checkbox class="lightGreenChecked" [(ngModel)]="checkedTitle" (change)="toggleTitle()">Title ({{ title.length }})</mat-checkbox>
+				<mat-checkbox class="orangeChecked" [(ngModel)]="checkedISRC" (change)="toggleISRC()">ISRC ({{ isrc.length }})</mat-checkbox>
+				<mat-checkbox class="lightOrangeChecked" [(ngModel)]="checkedDuration" (change)="toggleDuration()">Duration ({{ duration.length }})</mat-checkbox>
+			</section>
+		</div>
+	</div>
+</div>
