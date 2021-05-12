@@ -3,6 +3,8 @@ export type Songs = {
 	title: string;
 	isrc: string;
 	duration: string;
-	hasArtistAndTitle: boolean;
-	hasArtistAndIRSC: boolean;
+	matchesArtist: boolean;
+	matchesTitle: boolean;
+	matchesISRC: boolean;
+	matchesDuration: boolean;
 };

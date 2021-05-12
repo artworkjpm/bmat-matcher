@@ -1,6 +1,9 @@
 .container {
 	display: block;
 }
+.controls {
+	margin-left: 20px;
+}
 
 table {
 	border-collapse: collapse;
@@ -18,16 +21,45 @@ td {
 	display: flex;
 }
 
+.mat-checkbox {
+	display: block;
+	margin: 0 0 10px 10px;
+}
+
+.mat-icon {
+	cursor: pointer;
+	color: red;
+}
+
 .green {
 	background-color: green;
 	color: white;
 }
 
-.orange {
-	background-color: orange;
+::ng-deep .greenChecked.mat-checkbox-checked .mat-checkbox-background,
+.mat-checkbox-indeterminate .mat-checkbox-background {
+	background-color: green !important;
+}
+
+::ng-deep .greenChecked.mat-checkbox:not(.mat-checkbox-disabled) .mat-checkbox-ripple .mat-ripple-element {
+	background-color: green !important;
+}
+
+.lightGreen {
+	background-color: #00a800;
 	color: white;
 }
-.mat-icon {
-	cursor: pointer;
-	color: red;
+
+::ng-deep .lightGreenChecked.mat-checkbox-checked .mat-checkbox-background,
+.mat-checkbox-indeterminate .mat-checkbox-background {
+	background-color: #00a800 !important;
+}
+
+::ng-deep .lightGreenChecked.mat-checkbox:not(.mat-checkbox-disabled) .mat-checkbox-ripple .mat-ripple-element {
+	background-color: #00a800 !important;
+}
+
+::ng-deep .mat-checkbox-inner-container {
+	height: 26px !important;
+	width: 26px !important;
 }

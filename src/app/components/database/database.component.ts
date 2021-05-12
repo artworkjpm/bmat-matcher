@@ -14,9 +14,14 @@ export class DatabaseComponent implements OnInit {
 	csvRecords: Songs[] = [];
 	data = data as Songs[];
 	inputs = inputs as Songs[];
-	artistAndTitle: Songs[] = [];
-	artistAndIRSC: Songs[] = [];
-	isMatched = false;
+	artist: Songs[] = [];
+	title: Songs[] = [];
+	irsc: Songs[] = [];
+	duration: Songs[] = [];
+	checkedArtist = true;
+	checkedTitle = true;
+	checkedIRSC = true;
+	checkedDuration = true;
 	constructor(private ngxCsvParser: NgxCsvParser) {}
 
 	@ViewChild("fileImportInput") fileImportInput: any;
@@ -44,21 +49,53 @@ export class DatabaseComponent implements OnInit {
 	} */
 
 	startSearch() {
-		this.inputs.map((item) => {
-			if (this.data.find((a) => a.artist === item.artist && a.title === item.title)) {
-				this.artistAndTitle.push(item);
-				item.hasArtistAndTitle = true;
-			}
-			if (this.data.find((a) => a.artist === item.artist && a.isrc === item.isrc)) {
-				this.artistAndIRSC.push(item);
-				item.hasArtistAndIRSC = true;
-			}
-		});
-
-		console.log(this.artistAndTitle);
+		this.showArtist();
+		this.showTitle();
+		console.log(this.artist);
 	}
 
 	remove(index: number) {
 		this.inputs.splice(index, 1);
+		this.startSearch();
+	}
+
+	toggleArtist() {
+		if (!this.checkedArtist) {
+			this.inputs.map((item) => {
+				item.matchesArtist = false;
+			});
+		} else {
+			this.showArtist();
+		}
+	}
+
+	toggleTitle() {
+		if (!this.checkedTitle) {
+			this.inputs.map((item) => {
+				item.matchesTitle = false;
+			});
+		} else {
+			this.showTitle();
+		}
+	}
+
+	showArtist() {
+		this.artist = [];
+		this.inputs.map((item) => {
+			if (this.data.find((a) => a.artist === item.artist)) {
+				this.artist.push(item);
+				item.matchesArtist = true;
+			}
+		});
+	}
+
+	showTitle() {
+		this.title = [];
+		this.inputs.map((item) => {
+			if (this.data.find((a) => a.title === item.title)) {
+				this.title.push(item);
+				item.matchesTitle = true;
+			}
+		});
 	}
 }

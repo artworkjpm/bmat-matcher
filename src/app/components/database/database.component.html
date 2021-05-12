@@ -1,4 +1,3 @@
-<button (click)="startSearch()">Fire match</button>
 <div class="container">
 	<div class="inputs">
 		<h2>Sound Input Report</h2>
@@ -16,19 +15,19 @@
 							<th>title</th>
 							<th>isrc</th>
 							<th>duration</th>
-							<th>Save and Remove</th>
+							<th>remove</th>
 						</tr>
 					</thead>
 					<tbody>
 						<tr *ngFor="let csvData of inputs; let i = index">
 							<td>{{ i + 1 }}</td>
-							<td [ngClass]="{ green: csvData.hasArtistAndTitle }">
+							<td [ngClass]="{ green: csvData.matchesArtist }">
 								{{ csvData.artist }}
 							</td>
-							<td [ngClass]="{ green: csvData.hasArtistAndTitle }">
+							<td [ngClass]="{ lightGreen: csvData.matchesTitle }">
 								{{ csvData.title }}
 							</td>
-							<td [ngClass]="{ orange: csvData.hasArtistAndIRSC }">
+							<td>
 								{{ csvData.isrc }}
 							</td>
 							<td>
@@ -42,8 +41,12 @@
 				</table>
 			</div>
 
-			<div>
-				<p>We found {{ artistAndTitle.length }} that match ARTIST and TITLE</p>
+			<div class="controls">
+				<p>Matches Database Candidates:</p>
+				<section>
+					<mat-checkbox class="greenChecked" [(ngModel)]="checkedArtist" (change)="toggleArtist()">Artist ({{ artist.length }})</mat-checkbox>
+					<mat-checkbox class="lightGreenChecked" [(ngModel)]="checkedTitle" (change)="toggleTitle()">Title ({{ title.length }})</mat-checkbox>
+				</section>
 			</div>
 		</div>
 	</div>
