@@ -1,85 +1,86 @@
 <div class="container">
-	<div class="inputs">
-		<h2>Sound Input Report</h2>
-		<div class="csv-file-chooser-section">
-			<input type="file" #fileImportInput name="File Upload" id="csvFileUpload" (change)="fileChangeListener($event)" accept=".csv" />
-		</div>
+	<mat-tab-group animationDuration="0ms">
+		<mat-tab label="Sound Input Report"
+			><div class="inputs">
+				<div class="flex">
+					<div class="csv-result-table">
+						<table>
+							<thead>
+								<tr>
+									<th>#</th>
+									<th>Artist</th>
+									<th>Title</th>
+									<th>ISRC</th>
+									<th>Duration</th>
+									<th>Remove</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr *ngFor="let csvData of inputs; let i = index">
+									<td>{{ i + 1 }}</td>
+									<td [ngClass]="{ green: csvData.matchesArtist }">
+										{{ csvData.artist }}
+									</td>
+									<td [ngClass]="{ lightGreen: csvData.matchesTitle }">
+										{{ csvData.title }}
+									</td>
+									<td [ngClass]="{ orange: csvData.matchesISRC }">
+										{{ csvData.isrc }}
+									</td>
+									<td [ngClass]="{ lightOrange: csvData.matchesDuration }">
+										{{ csvData.duration }}
+									</td>
+									<td style="text-align: center">
+										<mat-icon aria-hidden="false" aria-label="clear" (click)="remove(i)">clear</mat-icon>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
 
-		<div class="flex">
-			<div class="csv-result-table">
+					<div class="controls">
+						<p>Sound Recordings Database Matches:</p>
+						<section>
+							<mat-checkbox class="greenChecked" [(ngModel)]="checkedArtist" (change)="toggleArtist()">Artist ({{ artist.length }})</mat-checkbox>
+							<mat-checkbox class="lightGreenChecked" [(ngModel)]="checkedTitle" (change)="toggleTitle()">Title ({{ title.length }})</mat-checkbox>
+							<mat-checkbox class="orangeChecked" [(ngModel)]="checkedISRC" (change)="toggleISRC()">ISRC ({{ isrc.length }})</mat-checkbox>
+							<mat-checkbox class="lightOrangeChecked" [(ngModel)]="checkedDuration" (change)="toggleDuration()">Duration ({{ duration.length }})</mat-checkbox>
+						</section>
+					</div>
+				</div>
+			</div></mat-tab
+		>
+		<mat-tab label="Sound Recordings Database">
+			<div class="data">
 				<table>
 					<thead>
 						<tr>
 							<th>#</th>
-							<th>artist</th>
-							<th>title</th>
-							<th>isrc</th>
-							<th>duration</th>
-							<th>remove</th>
+							<th>Artist</th>
+							<th>Title</th>
+							<th>ISRC</th>
+							<th>Duration</th>
 						</tr>
 					</thead>
 					<tbody>
-						<tr *ngFor="let csvData of inputs; let i = index">
+						<tr *ngFor="let data of data; let i = index">
 							<td>{{ i + 1 }}</td>
-							<td [ngClass]="{ green: csvData.matchesArtist }">
-								{{ csvData.artist }}
-							</td>
-							<td [ngClass]="{ lightGreen: csvData.matchesTitle }">
-								{{ csvData.title }}
+							<td>
+								{{ data.artist }}
 							</td>
 							<td>
-								{{ csvData.isrc }}
+								{{ data.title }}
 							</td>
 							<td>
-								{{ csvData.duration }}
+								{{ data.isrc }}
 							</td>
 							<td>
-								<mat-icon aria-hidden="false" aria-label="clear" (click)="remove(i)">clear</mat-icon>
+								{{ data.duration }}
 							</td>
 						</tr>
 					</tbody>
 				</table>
-			</div>
-
-			<div class="controls">
-				<p>Matches Database Candidates:</p>
-				<section>
-					<mat-checkbox class="greenChecked" [(ngModel)]="checkedArtist" (change)="toggleArtist()">Artist ({{ artist.length }})</mat-checkbox>
-					<mat-checkbox class="lightGreenChecked" [(ngModel)]="checkedTitle" (change)="toggleTitle()">Title ({{ title.length }})</mat-checkbox>
-				</section>
-			</div>
-		</div>
-	</div>
-
-	<div class="data">
-		<h2>Sound Recordings Database</h2>
-		<table>
-			<thead>
-				<tr>
-					<th>#</th>
-					<th>artist</th>
-					<th>title</th>
-					<th>isrc</th>
-					<th>duration</th>
-				</tr>
-			</thead>
-			<tbody>
-				<tr *ngFor="let data of data; let i = index">
-					<td>{{ i + 1 }}</td>
-					<td>
-						{{ data.artist }}
-					</td>
-					<td>
-						{{ data.title }}
-					</td>
-					<td>
-						{{ data.isrc }}
-					</td>
-					<td>
-						{{ data.duration }}
-					</td>
-				</tr>
-			</tbody>
-		</table>
-	</div>
+			</div></mat-tab
+		>
+	</mat-tab-group>
 </div>

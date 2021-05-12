@@ -1,6 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 import { ViewChild } from "@angular/core";
-import { NgxCsvParser, NgxCSVParserError } from "ngx-csv-parser";
+
 import { Songs } from "src/app/models";
 import { data } from "../../../assets/csv/sound-recordings";
 import { inputs } from "../../../assets/csv/sound-inputs";
@@ -11,46 +11,28 @@ import { inputs } from "../../../assets/csv/sound-inputs";
 	styleUrls: ["./database.component.scss"],
 })
 export class DatabaseComponent implements OnInit {
-	csvRecords: Songs[] = [];
 	data = data as Songs[];
 	inputs = inputs as Songs[];
 	artist: Songs[] = [];
 	title: Songs[] = [];
-	irsc: Songs[] = [];
+	isrc: Songs[] = [];
 	duration: Songs[] = [];
 	checkedArtist = true;
 	checkedTitle = true;
-	checkedIRSC = true;
+	checkedISRC = true;
 	checkedDuration = true;
-	constructor(private ngxCsvParser: NgxCsvParser) {}
-
-	@ViewChild("fileImportInput") fileImportInput: any;
+	constructor() {}
 
 	ngOnInit() {
 		console.log(this.data, this.inputs);
 		this.startSearch();
 	}
 
-	fileChangeListener($event: any): void {
-		const files = $event.srcElement.files;
-		this.ngxCsvParser.parse(files[0], { header: true, delimiter: "," }).subscribe(
-			(result) => {
-				this.csvRecords = result as Songs[];
-				/* this.startSearch(this.csvRecords); */
-			},
-			(error: NgxCSVParserError) => {
-				console.log("Error", error);
-			}
-		);
-	}
-
-	/* 	startSearch(inputs: Songs[]) {
-		console.log(inputs);
-	} */
-
 	startSearch() {
 		this.showArtist();
 		this.showTitle();
+		this.showISRC();
+		this.showDuration();
 		console.log(this.artist);
 	}
 
@@ -79,12 +61,32 @@ export class DatabaseComponent implements OnInit {
 		}
 	}
 
+	toggleISRC() {
+		if (!this.checkedISRC) {
+			this.inputs.map((item) => {
+				item.matchesISRC = false;
+			});
+		} else {
+			this.showISRC();
+		}
+	}
+
+	toggleDuration() {
+		if (!this.checkedDuration) {
+			this.inputs.map((item) => {
+				item.matchesDuration = false;
+			});
+		} else {
+			this.showDuration();
+		}
+	}
+
 	showArtist() {
 		this.artist = [];
 		this.inputs.map((item) => {
 			if (this.data.find((a) => a.artist === item.artist)) {
 				this.artist.push(item);
-				item.matchesArtist = true;
+				this.checkedArtist && (item.matchesArtist = true);
 			}
 		});
 	}
@@ -94,7 +96,31 @@ export class DatabaseComponent implements OnInit {
 		this.inputs.map((item) => {
 			if (this.data.find((a) => a.title === item.title)) {
 				this.title.push(item);
-				item.matchesTitle = true;
+				this.checkedTitle && (item.matchesTitle = true);
+			}
+		});
+	}
+
+	showISRC() {
+		this.isrc = [];
+		this.inputs.map((item) => {
+			if (item.isrc.length > 0) {
+				if (this.data.find((a) => a.isrc === item.isrc)) {
+					this.isrc.push(item);
+					this.checkedISRC && (item.matchesISRC = true);
+				}
+			}
+		});
+	}
+
+	showDuration() {
+		this.duration = [];
+		this.inputs.map((item) => {
+			if (item.duration) {
+				if (this.data.find((a) => a.duration === item.duration)) {
+					this.duration.push(item);
+					this.checkedDuration && (item.matchesDuration = true);
+				}
 			}
 		});
 	}

@@ -14,8 +14,9 @@ import { MatSelectModule } from "@angular/material/select";
 import { MatRadioModule } from "@angular/material/radio";
 import { MatExpansionModule } from "@angular/material/expansion";
 import { MatCheckboxModule } from "@angular/material/checkbox";
+import { MatTabsModule } from "@angular/material/tabs";
 
-const MaterialComponents = [MatMenuModule, MatToolbarModule, MatButtonModule, MatTableModule, MatFormFieldModule, MatInputModule, MatPaginatorModule, MatBadgeModule, MatIconModule, MatDialogModule, MatSelectModule, MatRadioModule, MatExpansionModule, MatCheckboxModule];
+const MaterialComponents = [MatMenuModule, MatToolbarModule, MatButtonModule, MatTableModule, MatFormFieldModule, MatInputModule, MatPaginatorModule, MatBadgeModule, MatIconModule, MatDialogModule, MatSelectModule, MatRadioModule, MatExpansionModule, MatCheckboxModule, MatTabsModule];
 
 @NgModule({
 	imports: [MaterialComponents],

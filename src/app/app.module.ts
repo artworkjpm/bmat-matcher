@@ -12,9 +12,10 @@ import { FlexLayoutModule } from "@angular/flex-layout";
 import { FormsModule } from "@angular/forms";
 import { DatabaseComponent } from "./components/database/database.component";
 import { NgxCsvParserModule } from "ngx-csv-parser";
+import { UploaderComponent } from './components/uploader/uploader.component';
 
 @NgModule({
-	declarations: [AppComponent, TopNavComponent, AboutAppComponent, AboutMeComponent, DatabaseComponent],
+	declarations: [AppComponent, TopNavComponent, AboutAppComponent, AboutMeComponent, DatabaseComponent, UploaderComponent],
 	imports: [BrowserModule, AppRoutingModule, MaterialModule, BrowserAnimationsModule, HttpClientModule, FlexLayoutModule, FormsModule, NgxCsvParserModule],
 	bootstrap: [AppComponent],
 })
