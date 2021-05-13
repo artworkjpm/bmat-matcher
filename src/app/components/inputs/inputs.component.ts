@@ -130,7 +130,7 @@ export class InputsComponent implements OnInit {
 	addToDB(item: Songs) {
 		console.log(item);
 		this.store.dispatch(addInput({ song: item }));
-		let snackBarRef = this.snackBar.open(`${item.artist} - ${item.title} added to Database`, "Undo adding to DB", {
+		let snackBarRef = this.snackBar.open(`${item.artist} "${item.title}" - added to Database`, "Undo this action", {
 			duration: 6000,
 		});
 		snackBarRef.onAction().subscribe(() => {
