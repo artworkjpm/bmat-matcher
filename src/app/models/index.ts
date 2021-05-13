@@ -1,4 +1,4 @@
-export type Songs = {
+export interface Songs {
 	artist: string;
 	title: string;
 	isrc: string;
@@ -7,4 +7,4 @@ export type Songs = {
 	matchesTitle: boolean;
 	matchesISRC: boolean;
 	matchesDuration: boolean;
-};
+}

@@ -2,6 +2,9 @@ import { Component, OnInit } from "@angular/core";
 import { Songs } from "src/app/models";
 import { data } from "../../../assets/csv/sound-recordings";
 import { inputs } from "../../../assets/csv/sound-inputs";
+import { select, Store } from "@ngrx/store";
+import { AppState } from "src/app/app.state";
+import { addInput } from "src/app/actions/data.actions";
 
 @Component({
 	selector: "app-inputs",
@@ -19,10 +22,15 @@ export class InputsComponent implements OnInit {
 	checkedTitle = true;
 	checkedISRC = true;
 	checkedDuration = true;
-	constructor() {}
+	constructor(private store: Store<AppState>) {}
 
 	ngOnInit() {
 		console.log(this.data, this.inputs);
+		this.startSearch();
+	}
+
+	remove(index: number) {
+		this.inputs.splice(index, 1);
 		this.startSearch();
 	}
 
@@ -32,51 +40,6 @@ export class InputsComponent implements OnInit {
 		this.showISRC();
 		this.showDuration();
 		console.log(this.artist);
-	}
-
-	remove(index: number) {
-		this.inputs.splice(index, 1);
-		this.startSearch();
-	}
-
-	toggleArtist() {
-		if (!this.checkedArtist) {
-			this.inputs.map((item) => {
-				item.matchesArtist = false;
-			});
-		} else {
-			this.showArtist();
-		}
-	}
-
-	toggleTitle() {
-		if (!this.checkedTitle) {
-			this.inputs.map((item) => {
-				item.matchesTitle = false;
-			});
-		} else {
-			this.showTitle();
-		}
-	}
-
-	toggleISRC() {
-		if (!this.checkedISRC) {
-			this.inputs.map((item) => {
-				item.matchesISRC = false;
-			});
-		} else {
-			this.showISRC();
-		}
-	}
-
-	toggleDuration() {
-		if (!this.checkedDuration) {
-			this.inputs.map((item) => {
-				item.matchesDuration = false;
-			});
-		} else {
-			this.showDuration();
-		}
 	}
 
 	showArtist() {
@@ -121,5 +84,45 @@ export class InputsComponent implements OnInit {
 				}
 			}
 		});
+	}
+
+	toggleArtist() {
+		if (!this.checkedArtist) {
+			this.inputs.map((item) => {
+				item.matchesArtist = false;
+			});
+		} else {
+			this.showArtist();
+		}
+	}
+
+	toggleTitle() {
+		if (!this.checkedTitle) {
+			this.inputs.map((item) => {
+				item.matchesTitle = false;
+			});
+		} else {
+			this.showTitle();
+		}
+	}
+
+	toggleISRC() {
+		if (!this.checkedISRC) {
+			this.inputs.map((item) => {
+				item.matchesISRC = false;
+			});
+		} else {
+			this.showISRC();
+		}
+	}
+
+	toggleDuration() {
+		if (!this.checkedDuration) {
+			this.inputs.map((item) => {
+				item.matchesDuration = false;
+			});
+		} else {
+			this.showDuration();
+		}
 	}
 }

@@ -1,7 +1,6 @@
 import { Component, OnInit } from "@angular/core";
-
-import { Songs } from "src/app/models";
-import { data } from "../../../assets/csv/sound-recordings";
+import { select, Store } from "@ngrx/store";
+import { AppState } from "src/app/app.state";
 import { SearchComponent } from "../search/search.component";
 
 @Component({
@@ -11,10 +10,10 @@ import { SearchComponent } from "../search/search.component";
 	providers: [SearchComponent],
 })
 export class DatabaseComponent implements OnInit {
-	data = data as Songs[];
-	constructor() {}
+	data$ = this.store.pipe(select((state) => state.database));
+	constructor(private store: Store<AppState>) {}
 
 	ngOnInit() {
-		console.log(this.data);
+		this.data$.subscribe((item) => console.log(item));
 	}
 }
