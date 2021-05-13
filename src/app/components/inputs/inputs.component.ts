@@ -4,7 +4,8 @@ import { data } from "../../../assets/csv/sound-recordings";
 import { inputs } from "../../../assets/csv/sound-inputs";
 import { select, Store } from "@ngrx/store";
 import { AppState } from "src/app/app.state";
-import { addInput } from "src/app/actions/data.actions";
+import { addInput, removeLastItemAdded } from "src/app/actions/data.actions";
+import { MatSnackBar } from "@angular/material/snack-bar";
 
 @Component({
 	selector: "app-inputs",
@@ -22,7 +23,7 @@ export class InputsComponent implements OnInit {
 	checkedTitle = true;
 	checkedISRC = true;
 	checkedDuration = true;
-	constructor(private store: Store<AppState>) {}
+	constructor(private store: Store<AppState>, private snackBar: MatSnackBar) {}
 
 	ngOnInit() {
 		console.log(this.data, this.inputs);
@@ -124,5 +125,16 @@ export class InputsComponent implements OnInit {
 		} else {
 			this.showDuration();
 		}
+	}
+
+	addToDB(item: Songs) {
+		console.log(item);
+		this.store.dispatch(addInput({ song: item }));
+		let snackBarRef = this.snackBar.open(`${item.artist} - ${item.title} added to Database`, "Undo adding to DB", {
+			duration: 6000,
+		});
+		snackBarRef.onAction().subscribe(() => {
+			this.store.dispatch(removeLastItemAdded());
+		});
 	}
 }

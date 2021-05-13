@@ -2,6 +2,7 @@ import { Component, OnInit } from "@angular/core";
 import { select, Store } from "@ngrx/store";
 import { AppState } from "src/app/app.state";
 import { SearchComponent } from "../search/search.component";
+import { removeData } from "src/app/actions/data.actions";
 
 @Component({
 	selector: "app-database",
@@ -15,5 +16,9 @@ export class DatabaseComponent implements OnInit {
 
 	ngOnInit() {
 		this.data$.subscribe((item) => console.log(item));
+	}
+
+	remove(index: number) {
+		this.store.dispatch(removeData({ index }));
 	}
 }

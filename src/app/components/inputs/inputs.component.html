@@ -10,6 +10,7 @@
 						<th>ISRC</th>
 						<th>Duration</th>
 						<th>Remove</th>
+						<th>Add to DB</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -28,7 +29,10 @@
 							{{ csvData.duration }}
 						</td>
 						<td style="text-align: center">
-							<mat-icon aria-hidden="false" aria-label="clear" (click)="remove(i)">clear</mat-icon>
+							<mat-icon aria-hidden="false" aria-label="clear" (click)="remove(i)" class="red">clear</mat-icon>
+						</td>
+						<td style="text-align: center">
+							<mat-icon aria-hidden="false" aria-label="playlist_add" (click)="addToDB(csvData)">playlist_add</mat-icon>
 						</td>
 					</tr>
 				</tbody>
@@ -36,7 +40,7 @@
 		</div>
 
 		<div class="controls">
-			<p>Sound Recordings Database Matches:</p>
+			<p><b>Matches to our database:</b></p>
 			<section>
 				<mat-checkbox class="greenChecked" [(ngModel)]="checkedArtist" (change)="toggleArtist()">Artist ({{ artist.length }})</mat-checkbox>
 				<mat-checkbox class="lightGreenChecked" [(ngModel)]="checkedTitle" (change)="toggleTitle()">Title ({{ title.length }})</mat-checkbox>

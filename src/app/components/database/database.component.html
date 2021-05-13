@@ -8,6 +8,7 @@
 				<th>Title</th>
 				<th>ISRC</th>
 				<th>Duration</th>
+				<th>Remove</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -24,6 +25,9 @@
 				</td>
 				<td>
 					{{ data.duration }}
+				</td>
+				<td style="text-align: center">
+					<mat-icon aria-hidden="false" aria-label="clear" (click)="remove(i)" class="red">clear</mat-icon>
 				</td>
 			</tr>
 		</tbody>
