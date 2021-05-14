@@ -3,7 +3,6 @@ import { select, Store } from "@ngrx/store";
 import { AppState } from "src/app/app.state";
 import { SearchComponent } from "../search/search.component";
 import { removeData } from "src/app/actions/data.actions";
-import { filter } from "rxjs/operators";
 
 @Component({
 	selector: "app-database",
