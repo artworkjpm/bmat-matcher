@@ -19,18 +19,20 @@ import { SearchComponent } from "./components/search/search.component";
 import { StoreModule } from "@ngrx/store";
 import { dataReducer, searchReducer } from "./reducers/database.reducer";
 import { StoreDevtoolsModule } from "@ngrx/store-devtools";
+import { DataEffects } from "./effects/data.effects";
+import { EffectsModule } from "@ngrx/effects";
 
 @NgModule({
 	declarations: [AppComponent, TopNavComponent, AboutAppComponent, AboutMeComponent, DatabaseComponent, UploaderComponent, InputsComponent, HomeComponent, SearchComponent],
 	imports: [
 		BrowserModule,
 		AppRoutingModule,
-
 		StoreModule.forRoot({
 			database: dataReducer,
 			searchText: searchReducer,
 		}),
 		StoreDevtoolsModule.instrument(),
+		EffectsModule.forRoot([DataEffects]),
 		MaterialModule,
 		BrowserAnimationsModule,
 		HttpClientModule,
