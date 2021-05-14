@@ -17,16 +17,20 @@ import { InputsComponent } from "./components/inputs/inputs.component";
 import { HomeComponent } from "./components/home/home.component";
 import { SearchComponent } from "./components/search/search.component";
 import { StoreModule } from "@ngrx/store";
-import { dataReducer } from "./reducers/database.reducer";
+import { dataReducer, searchReducer } from "./reducers/database.reducer";
+import { StoreDevtoolsModule } from "@ngrx/store-devtools";
 
 @NgModule({
 	declarations: [AppComponent, TopNavComponent, AboutAppComponent, AboutMeComponent, DatabaseComponent, UploaderComponent, InputsComponent, HomeComponent, SearchComponent],
 	imports: [
 		BrowserModule,
 		AppRoutingModule,
+
 		StoreModule.forRoot({
 			database: dataReducer,
+			searchText: searchReducer,
 		}),
+		StoreDevtoolsModule.instrument(),
 		MaterialModule,
 		BrowserAnimationsModule,
 		HttpClientModule,

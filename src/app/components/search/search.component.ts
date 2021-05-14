@@ -1,6 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 import { Store } from "@ngrx/store";
-import { filterTable } from "src/app/actions/data.actions";
+import { filterTable, saveSearchText } from "src/app/actions/data.actions";
 import { AppState } from "src/app/app.state";
 
 @Component({
@@ -16,6 +16,7 @@ export class SearchComponent implements OnInit {
 	ngOnInit(): void {}
 
 	filterTable() {
+		this.store.dispatch(saveSearchText({ text: this.searchText }));
 		this.store.dispatch(filterTable({ text: this.searchText, field: "artist" }));
 	}
 }
