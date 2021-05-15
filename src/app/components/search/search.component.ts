@@ -17,6 +17,6 @@ export class SearchComponent implements OnInit {
 
 	filterTable() {
 		this.store.dispatch(saveSearchText({ text: this.searchText }));
-		this.store.dispatch(filterTable({ text: this.searchText, field: "artist" }));
+		/* this.store.dispatch(filterTable({ text: this.searchText, field: "artist" })); */
 	}
 }

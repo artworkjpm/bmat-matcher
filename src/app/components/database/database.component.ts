@@ -3,7 +3,10 @@ import { select, Store } from "@ngrx/store";
 import { AppState } from "src/app/app.state";
 import { SearchComponent } from "../search/search.component";
 import { removeData } from "src/app/actions/data.actions";
-import { filter } from "rxjs/operators";
+import { filter, map } from "rxjs/operators";
+import { from, Observable } from "rxjs";
+import { Songs } from "src/app/models";
+import { filterDataBase } from "src/app/selectors";
 
 @Component({
 	selector: "app-database",
@@ -12,11 +15,16 @@ import { filter } from "rxjs/operators";
 	providers: [SearchComponent],
 })
 export class DatabaseComponent implements OnInit {
-	data$ = this.store.pipe(select((state) => state.database));
+	data$: Observable<Array<Songs>> | undefined;
+	searchText$ = this.store.select((state) => state.searchText.text);
 	constructor(public store: Store<AppState>) {}
 
 	remove(index: number) {
 		this.store.dispatch(removeData({ index }));
 	}
-	ngOnInit() {}
+	ngOnInit() {
+		this.searchText$.subscribe((item) => {
+			this.data$ = this.store.select(filterDataBase(item));
+		});
+	}
 }
