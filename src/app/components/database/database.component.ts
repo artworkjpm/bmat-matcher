@@ -1,10 +1,9 @@
 import { Component, OnInit } from "@angular/core";
-import { select, Store } from "@ngrx/store";
+import { Store } from "@ngrx/store";
 import { AppState } from "src/app/app.state";
 import { SearchComponent } from "../search/search.component";
 import { removeData } from "src/app/actions/data.actions";
-import { filter, map } from "rxjs/operators";
-import { from, Observable } from "rxjs";
+import { Observable } from "rxjs";
 import { Songs } from "src/app/models";
 import { filterDataBase } from "src/app/selectors";
 
@@ -16,7 +15,7 @@ import { filterDataBase } from "src/app/selectors";
 })
 export class DatabaseComponent implements OnInit {
 	data$: Observable<Array<Songs>> | undefined;
-	searchText$ = this.store.select((state) => state.searchText.text);
+	searchText$ = this.store.select((state) => state.searchText);
 	constructor(public store: Store<AppState>) {}
 
 	remove(index: number) {
