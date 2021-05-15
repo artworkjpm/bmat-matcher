@@ -17,18 +17,20 @@ export const dataReducer = createReducer<Songs[]>(
 		array.splice(index, 1);
 		return array;
 	}),
-	on(addInput, (state, action) =>
-		state.concat({
+	on(addInput, (state, action) => {
+		console.log(action.song);
+
+		return state.concat({
 			...action.song,
-		})
-	),
+		});
+	}),
 	on(removeLastItemAdded, (state) => {
 		const array = [...state];
 		array.pop();
 		return array;
 	}),
 
-	on(filterTableComplete, (state, action) => {
+	on(filterTableComplete, (state) => {
 		return state;
 	})
 );

@@ -6,6 +6,9 @@ import { select, Store } from "@ngrx/store";
 import { AppState } from "src/app/app.state";
 import { addInput, removeLastItemAdded } from "src/app/actions/data.actions";
 import { MatSnackBar } from "@angular/material/snack-bar";
+import { Observable } from "rxjs";
+import { take } from "rxjs/operators";
+import { isNgTemplate } from "@angular/compiler";
 
 @Component({
 	selector: "app-inputs",
@@ -14,6 +17,7 @@ import { MatSnackBar } from "@angular/material/snack-bar";
 })
 export class InputsComponent implements OnInit {
 	data = data as Songs[];
+	data$ = this.store.select((state) => state.database);
 	inputs = inputs as Songs[];
 	artist: Songs[] = [];
 	title: Songs[] = [];
@@ -26,7 +30,7 @@ export class InputsComponent implements OnInit {
 	constructor(private store: Store<AppState>, private snackBar: MatSnackBar) {}
 
 	ngOnInit() {
-		console.log(this.data, this.inputs);
+		/* console.log(this.data, this.inputs); */
 		this.startSearch();
 	}
 
@@ -37,13 +41,42 @@ export class InputsComponent implements OnInit {
 
 	startSearch() {
 		this.showArtist();
-		this.showTitle();
+		/* 	this.showTitle();
 		this.showISRC();
-		this.showDuration();
-		console.log(this.artist);
+		this.showDuration(); */
+		console.log("artistList", this.artist);
 	}
 
 	showArtist() {
+		this.artist = [];
+		this.data$.pipe(take(1)).subscribe((song) => {
+			this.inputs.map((item) => {
+				if (song.find((a) => a.artist === item.artist)) {
+					this.checkedArtist && (item = { ...item, matchesArtist: true });
+					this.artist.push(item);
+					return item;
+
+					/* console.log("run showArtist", this.artist); */
+				}
+				return item;
+			});
+		});
+		console.log("this.inputs", this.inputs);
+	}
+
+	addToDB(item: Songs) {
+		console.log(item);
+		this.store.dispatch(addInput({ song: item }));
+		let snackBarRef = this.snackBar.open(`${item.artist} "${item.title}" - added to Database`, "Undo this action", {
+			duration: 6000,
+		});
+		snackBarRef.onAction().subscribe(() => {
+			this.store.dispatch(removeLastItemAdded());
+		});
+		this.startSearch();
+	}
+
+	/* 	showArtist() {
 		this.artist = [];
 		this.inputs.map((item) => {
 			if (this.data.find((a) => a.artist === item.artist)) {
@@ -51,7 +84,7 @@ export class InputsComponent implements OnInit {
 				this.checkedArtist && (item.matchesArtist = true);
 			}
 		});
-	}
+	} */
 
 	showTitle() {
 		this.title = [];
@@ -90,7 +123,7 @@ export class InputsComponent implements OnInit {
 	toggleArtist() {
 		if (!this.checkedArtist) {
 			this.inputs.map((item) => {
-				item.matchesArtist = false;
+				item = { ...item, matchesArtist: false };
 			});
 		} else {
 			this.showArtist();
@@ -125,16 +158,5 @@ export class InputsComponent implements OnInit {
 		} else {
 			this.showDuration();
 		}
-	}
-
-	addToDB(item: Songs) {
-		console.log(item);
-		this.store.dispatch(addInput({ song: item }));
-		let snackBarRef = this.snackBar.open(`${item.artist} "${item.title}" - added to Database`, "Undo this action", {
-			duration: 6000,
-		});
-		snackBarRef.onAction().subscribe(() => {
-			this.store.dispatch(removeLastItemAdded());
-		});
 	}
 }
