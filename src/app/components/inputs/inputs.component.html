@@ -16,36 +16,48 @@
 				<tbody>
 					<tr *ngFor="let csvData of inputs$ | async; let i = index">
 						<td>{{ i + 1 }}</td>
-						<td [ngClass]="{ green: artist.includes(i) && checkedArtist }">
-							{{ csvData.artist }}
-						</td>
-						<td [ngClass]="{ lightGreen: title.includes(i) && checkedTitle }">
-							{{ csvData.title }}
-						</td>
-						<td [ngClass]="{ orange: csvData.matchesISRC }">
-							{{ csvData.isrc }}
-						</td>
-						<td [ngClass]="{ lightOrange: csvData.matchesDuration }">
-							{{ csvData.duration }}
+						<td [ngClass]="{ green: artist.includes(i) && checkedArtist }"> {{ csvData.artist }} </td>
+						<td [ngClass]="{ lightGreen: title.includes(i) && checkedTitle }"> {{ csvData.title }} </td>
+						<td [ngClass]="{ orange: isrc.includes(i) && checkedISRC }"> {{ csvData.isrc }} </td>
+						<td [ngClass]="{ lightOrange: duration.includes(i) && checkedDuration }"> {{ csvData.duration }}
 						</td>
 						<td style="text-align: center">
-							<mat-icon aria-hidden="false" aria-label="clear" (click)="remove(i)" class="red">clear</mat-icon>
+							<mat-icon aria-hidden="false" aria-label="clear" (click)="remove(i)" class="red">clear
+							</mat-icon>
 						</td>
 						<td style="text-align: center">
-							<mat-icon aria-hidden="false" aria-label="playlist_add" (click)="addToDB(csvData)">playlist_add</mat-icon>
+							<mat-icon aria-hidden="false" aria-label="playlist_add" (click)="addToDB(csvData)">
+								playlist_add</mat-icon>
 						</td>
 					</tr>
 				</tbody>
 			</table>
 		</div>
-
 		<div class="controls">
-			<p><b>Database:</b></p>
 			<section>
-				<mat-checkbox class="greenChecked" [(ngModel)]="checkedArtist">Artist ({{ artist.length }})</mat-checkbox>
-				<mat-checkbox class="lightGreenChecked" [(ngModel)]="checkedTitle">Title ({{ title.length }})</mat-checkbox>
+				<h2>Matches with our Database:</h2>
+				<mat-checkbox class="greenChecked" [(ngModel)]="checkedArtist">Artist ({{ artist.length }})
+				</mat-checkbox>
+				<mat-checkbox class="lightGreenChecked" [(ngModel)]="checkedTitle">Title ({{ title.length }})
+				</mat-checkbox>
 				<mat-checkbox class="orangeChecked" [(ngModel)]="checkedISRC">ISRC ({{ isrc.length }})</mat-checkbox>
-				<mat-checkbox class="lightOrangeChecked" [(ngModel)]="checkedDuration">Duration ({{ duration.length }})</mat-checkbox>
+				<mat-checkbox class="lightOrangeChecked" [(ngModel)]="checkedDuration">Duration ({{ duration.length }})
+				</mat-checkbox>
+			</section>
+			<section>
+				<h2>How does this work?</h2>
+				<p>If a table cell has a colour it means this value exists in our <b>Sounds Recordings Database</b> </p>
+			</section>
+			<section>
+				<h2>Updating our Database:</h2>
+				<p>When you click <mat-icon aria-hidden="false" aria-label="playlist_add"> playlist_add</mat-icon> , you
+					will add that record to our database and you will see that this table of inputs will update by
+					changing its cell colours to show a match</p>
+			</section>
+			<section>
+				<h2>Removing from our database:</h2>
+				<p>If you remove an item from <b>Sounds Recordings Database</b> table, you will see that this table of
+					inputs will update by removing coloured cells for non-matched values</p>
 			</section>
 		</div>
 	</div>

@@ -6,6 +6,7 @@ import { Store } from "@ngrx/store";
 import { AppState } from "src/app/app.state";
 import { addInput, removeLastItemAdded } from "src/app/actions/data.actions";
 import { MatSnackBar } from "@angular/material/snack-bar";
+import { removeInput } from "src/app/actions/inputs.actions";
 
 @Component({
 	selector: "app-inputs",
@@ -29,26 +30,39 @@ export class InputsComponent implements OnInit {
 
 	ngOnInit() {
 		this.startMatchChecker();
+		this.data$.subscribe(() => this.startMatchChecker());
 	}
 
 	remove(index: number) {
-		this.inputs.splice(index, 1);
+		this.store.dispatch(removeInput({ index }));
 		this.startMatchChecker();
 	}
 
 	startMatchChecker() {
 		this.artist = [];
-		this.inputs$?.subscribe((song) => {
+		this.title = [];
+		this.isrc = [];
+		this.duration = [];
+
+		this.inputs$.subscribe((song) => {
 			song.map((song, i) =>
-				this.data$?.subscribe((data) =>
+				this.data$.subscribe((data) =>
 					data.map((item) => {
-						if (song.artist === item.artist) {
+						if (song.artist && song.artist === item.artist) {
 							this.artist.push(i);
 							this.artist = [...new Set(this.artist)];
 						}
-						if (song.title === item.title) {
+						if (song.title && song.title === item.title) {
 							this.title.push(i);
 							this.title = [...new Set(this.title)];
+						}
+						if (song.isrc && song.isrc === item.isrc) {
+							this.isrc.push(i);
+							this.isrc = [...new Set(this.isrc)];
+						}
+						if (song.duration && song.duration === item.duration) {
+							this.duration.push(i);
+							this.duration = [...new Set(this.duration)];
 						}
 					})
 				)
@@ -64,6 +78,5 @@ export class InputsComponent implements OnInit {
 		snackBarRef.onAction().subscribe(() => {
 			this.store.dispatch(removeLastItemAdded());
 		});
-		this.ngOnInit();
 	}
 }

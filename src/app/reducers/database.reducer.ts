@@ -18,8 +18,6 @@ export const dataReducer = createReducer<Songs[]>(
 		return array;
 	}),
 	on(addInput, (state, action) => {
-		console.log(action.song);
-
 		return state.concat({
 			...action.song,
 		});

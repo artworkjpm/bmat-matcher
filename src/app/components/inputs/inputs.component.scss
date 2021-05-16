@@ -9,9 +9,17 @@
 	margin-top: 20px;
 }
 
+section {
+	margin-bottom: 20px;
+}
+
 table {
 	border-collapse: collapse;
 	width: 100%;
+}
+
+th {
+	white-space: nowrap;
 }
 
 th,
