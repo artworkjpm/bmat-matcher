@@ -16,10 +16,10 @@
 				<tbody>
 					<tr *ngFor="let csvData of inputs$ | async; let i = index">
 						<td>{{ i + 1 }}</td>
-						<td [ngClass]="{ green: csvData.matchesArtist }">
+						<td [ngClass]="{ green: artist.includes(i) && checkedArtist }">
 							{{ csvData.artist }}
 						</td>
-						<td [ngClass]="{ lightGreen: csvData.matchesTitle }">
+						<td [ngClass]="{ lightGreen: title.includes(i) && checkedTitle }">
 							{{ csvData.title }}
 						</td>
 						<td [ngClass]="{ orange: csvData.matchesISRC }">
@@ -42,10 +42,10 @@
 		<div class="controls">
 			<p><b>Database:</b></p>
 			<section>
-				<mat-checkbox class="greenChecked" [(ngModel)]="checkedArtist" (change)="toggleArtist()">Artist ({{ artist.length }})</mat-checkbox>
-				<mat-checkbox class="lightGreenChecked" [(ngModel)]="checkedTitle" (change)="toggleTitle()">Title ({{ title.length }})</mat-checkbox>
-				<mat-checkbox class="orangeChecked" [(ngModel)]="checkedISRC" (change)="toggleISRC()">ISRC ({{ isrc.length }})</mat-checkbox>
-				<mat-checkbox class="lightOrangeChecked" [(ngModel)]="checkedDuration" (change)="toggleDuration()">Duration ({{ duration.length }})</mat-checkbox>
+				<mat-checkbox class="greenChecked" [(ngModel)]="checkedArtist">Artist ({{ artist.length }})</mat-checkbox>
+				<mat-checkbox class="lightGreenChecked" [(ngModel)]="checkedTitle">Title ({{ title.length }})</mat-checkbox>
+				<mat-checkbox class="orangeChecked" [(ngModel)]="checkedISRC">ISRC ({{ isrc.length }})</mat-checkbox>
+				<mat-checkbox class="lightOrangeChecked" [(ngModel)]="checkedDuration">Duration ({{ duration.length }})</mat-checkbox>
 			</section>
 		</div>
 	</div>

@@ -2,13 +2,10 @@ import { Component, OnInit } from "@angular/core";
 import { Songs } from "src/app/models";
 import { data } from "../../../assets/csv/sound-recordings";
 import { inputs } from "../../../assets/csv/sound-inputs";
-import { select, Store } from "@ngrx/store";
+import { Store } from "@ngrx/store";
 import { AppState } from "src/app/app.state";
 import { addInput, removeLastItemAdded } from "src/app/actions/data.actions";
 import { MatSnackBar } from "@angular/material/snack-bar";
-import { Observable } from "rxjs";
-import { find, map, take } from "rxjs/operators";
-import { addMatchers } from "src/app/selectors";
 
 @Component({
 	selector: "app-inputs",
@@ -19,11 +16,11 @@ export class InputsComponent implements OnInit {
 	data = data as Songs[];
 	data$ = this.store.select((state) => state.database);
 	inputs = inputs as Songs[];
-	inputs$: Observable<Array<Songs>> | undefined;
-	artist: Songs[] = [];
-	title: Songs[] = [];
-	isrc: Songs[] = [];
-	duration: Songs[] = [];
+	inputs$ = this.store.select((state) => state.inputs);
+	artist: number[] = [];
+	title: number[] = [];
+	isrc: number[] = [];
+	duration: number[] = [];
 	checkedArtist = true;
 	checkedTitle = true;
 	checkedISRC = true;
@@ -31,9 +28,6 @@ export class InputsComponent implements OnInit {
 	constructor(private store: Store<AppState>, private snackBar: MatSnackBar) {}
 
 	ngOnInit() {
-		/* console.log(this.data, this.inputs); */
-		this.inputs$ = this.store.select((state) => state.inputs);
-		/* this.inputs$ = this.store.select(addMatchers(true)); */
 		this.startSearch();
 	}
 
@@ -66,19 +60,21 @@ export class InputsComponent implements OnInit {
 	showArtist() {
 		this.artist = [];
 		this.inputs$?.subscribe((song) => {
-			song.map((song) => console.log(song.artist));
+			song.map((song, i) =>
+				this.data$?.subscribe((data) =>
+					data.map((item) => {
+						if (song.artist === item.artist) {
+							this.artist.push(i);
+							this.artist = [...new Set(this.artist)];
+						} else if (song.title === item.title) {
+							this.title.push(i);
+							this.title = [...new Set(this.title)];
+						}
+					})
+				)
+			);
 		});
 	}
-
-	/* 	showArtist() {
-		this.artist = [];
-		this.inputs.map((item) => {
-			if (this.data.find((a) => a.artist === item.artist)) {
-				this.artist.push(item);
-				this.checkedArtist && (item.matchesArtist = true);
-			}
-		});
-	} */
 
 	addToDB(item: Songs) {
 		this.store.dispatch(addInput({ song: item }));
@@ -89,83 +85,5 @@ export class InputsComponent implements OnInit {
 			this.store.dispatch(removeLastItemAdded());
 		});
 		this.startSearch();
-	}
-
-	showTitle() {
-		this.title = [];
-		let copyArray = [...this.inputs];
-		copyArray.map((item, i) => {
-			if (this.data.find((a) => a.title === item.title)) {
-				this.title.push(item);
-				this.checkedTitle && (item.matchesTitle = true);
-			}
-		});
-		this.inputs = copyArray;
-	}
-
-	showISRC() {
-		this.isrc = [];
-		this.inputs.map((item) => {
-			if (item.isrc.length > 0) {
-				if (this.data.find((a) => a.isrc === item.isrc)) {
-					this.isrc.push(item);
-					this.checkedISRC && (item.matchesISRC = true);
-				}
-			}
-		});
-	}
-
-	showDuration() {
-		this.duration = [];
-		this.inputs.map((item) => {
-			if (item.duration) {
-				if (this.data.find((a) => a.duration === item.duration)) {
-					this.duration.push(item);
-					this.checkedDuration && (item.matchesDuration = true);
-				}
-			}
-		});
-	}
-
-	toggleArtist() {
-		if (!this.checkedArtist) {
-			let copyArray = [...this.inputs];
-			copyArray.map((item) => {
-				item.matchesArtist = false;
-			});
-			this.inputs = copyArray;
-		} else {
-			/* this.showArtist(); */
-		}
-	}
-
-	toggleTitle() {
-		if (!this.checkedTitle) {
-			this.inputs.map((item) => {
-				item.matchesTitle = false;
-			});
-		} else {
-			this.showTitle();
-		}
-	}
-
-	toggleISRC() {
-		if (!this.checkedISRC) {
-			this.inputs.map((item) => {
-				item.matchesISRC = false;
-			});
-		} else {
-			this.showISRC();
-		}
-	}
-
-	toggleDuration() {
-		if (!this.checkedDuration) {
-			this.inputs.map((item) => {
-				item.matchesDuration = false;
-			});
-		} else {
-			this.showDuration();
-		}
 	}
 }
