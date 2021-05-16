@@ -7,7 +7,7 @@ import { AppState } from "src/app/app.state";
 import { addInput, removeLastItemAdded } from "src/app/actions/data.actions";
 import { MatSnackBar } from "@angular/material/snack-bar";
 import { Observable } from "rxjs";
-import { take } from "rxjs/operators";
+import { find, map, take } from "rxjs/operators";
 import { isNgTemplate } from "@angular/compiler";
 
 @Component({
@@ -47,22 +47,41 @@ export class InputsComponent implements OnInit {
 		console.log("artistList", this.artist);
 	}
 
+	/* 	this.data$.pipe(take(1)).subscribe((song) => {
+		this.inputs.map((item) => {
+			if (song.find((a) => a.artist === item.artist)) {
+				this.checkedArtist && (item = { ...item, matchesArtist: true });
+				this.artist.push(item);
+				return item;
+
+
+			}
+			return item;
+		});
+	}); */
+
 	showArtist() {
 		this.artist = [];
-		this.data$.pipe(take(1)).subscribe((song) => {
-			this.inputs.map((item) => {
-				if (song.find((a) => a.artist === item.artist)) {
-					this.checkedArtist && (item = { ...item, matchesArtist: true });
+		this.inputs.map((item) => {
+			this.data$.subscribe((el) => {
+				if (el.find((a) => a.artist === item.artist)) {
 					this.artist.push(item);
-					return item;
-
-					/* console.log("run showArtist", this.artist); */
+					this.checkedArtist && (item.matchesArtist = true);
 				}
-				return item;
 			});
 		});
 		console.log("this.inputs", this.inputs);
 	}
+
+	/* 	showArtist() {
+		this.artist = [];
+		this.inputs.map((item) => {
+			if (this.data.find((a) => a.artist === item.artist)) {
+				this.artist.push(item);
+				this.checkedArtist && (item.matchesArtist = true);
+			}
+		});
+	} */
 
 	addToDB(item: Songs) {
 		console.log(item);
@@ -75,16 +94,6 @@ export class InputsComponent implements OnInit {
 		});
 		this.startSearch();
 	}
-
-	/* 	showArtist() {
-		this.artist = [];
-		this.inputs.map((item) => {
-			if (this.data.find((a) => a.artist === item.artist)) {
-				this.artist.push(item);
-				this.checkedArtist && (item.matchesArtist = true);
-			}
-		});
-	} */
 
 	showTitle() {
 		this.title = [];
@@ -123,7 +132,7 @@ export class InputsComponent implements OnInit {
 	toggleArtist() {
 		if (!this.checkedArtist) {
 			this.inputs.map((item) => {
-				item = { ...item, matchesArtist: false };
+				item.matchesArtist = false;
 			});
 		} else {
 			this.showArtist();
