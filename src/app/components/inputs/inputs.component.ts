@@ -28,36 +28,15 @@ export class InputsComponent implements OnInit {
 	constructor(private store: Store<AppState>, private snackBar: MatSnackBar) {}
 
 	ngOnInit() {
-		this.startSearch();
+		this.startMatchChecker();
 	}
 
 	remove(index: number) {
 		this.inputs.splice(index, 1);
-		this.startSearch();
+		this.startMatchChecker();
 	}
 
-	startSearch() {
-		this.showArtist();
-		/* this.showTitle(); */
-		/* 	this.showISRC();
-		this.showDuration(); */
-		console.log("artistList", this.artist);
-	}
-
-	/* 	this.data$.pipe(take(1)).subscribe((song) => {
-		this.inputs.map((item) => {
-			if (song.find((a) => a.artist === item.artist)) {
-				this.checkedArtist && (item = { ...item, matchesArtist: true });
-				this.artist.push(item);
-				return item;
-
-
-			}
-			return item;
-		});
-	}); */
-
-	showArtist() {
+	startMatchChecker() {
 		this.artist = [];
 		this.inputs$?.subscribe((song) => {
 			song.map((song, i) =>
@@ -66,7 +45,8 @@ export class InputsComponent implements OnInit {
 						if (song.artist === item.artist) {
 							this.artist.push(i);
 							this.artist = [...new Set(this.artist)];
-						} else if (song.title === item.title) {
+						}
+						if (song.title === item.title) {
 							this.title.push(i);
 							this.title = [...new Set(this.title)];
 						}
@@ -84,6 +64,6 @@ export class InputsComponent implements OnInit {
 		snackBarRef.onAction().subscribe(() => {
 			this.store.dispatch(removeLastItemAdded());
 		});
-		this.startSearch();
+		this.ngOnInit();
 	}
 }
