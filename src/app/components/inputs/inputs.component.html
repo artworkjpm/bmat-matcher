@@ -14,7 +14,7 @@
 					</tr>
 				</thead>
 				<tbody>
-					<tr *ngFor="let csvData of inputs; let i = index">
+					<tr *ngFor="let csvData of inputs$ | async; let i = index">
 						<td>{{ i + 1 }}</td>
 						<td [ngClass]="{ green: csvData.matchesArtist }">
 							{{ csvData.artist }}

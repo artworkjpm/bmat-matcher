@@ -21,6 +21,7 @@ import { dataReducer, searchReducer } from "./reducers/database.reducer";
 import { StoreDevtoolsModule } from "@ngrx/store-devtools";
 import { DataEffects } from "./effects/data.effects";
 import { EffectsModule } from "@ngrx/effects";
+import { inputsReducer } from "./reducers/inputs.reducer";
 
 @NgModule({
 	declarations: [AppComponent, TopNavComponent, AboutAppComponent, AboutMeComponent, DatabaseComponent, UploaderComponent, InputsComponent, HomeComponent, SearchComponent],
@@ -30,6 +31,7 @@ import { EffectsModule } from "@ngrx/effects";
 		StoreModule.forRoot({
 			database: dataReducer,
 			searchText: searchReducer,
+			inputs: inputsReducer,
 		}),
 		StoreDevtoolsModule.instrument(),
 		EffectsModule.forRoot([DataEffects]),

@@ -8,7 +8,7 @@ import { addInput, removeLastItemAdded } from "src/app/actions/data.actions";
 import { MatSnackBar } from "@angular/material/snack-bar";
 import { Observable } from "rxjs";
 import { find, map, take } from "rxjs/operators";
-import { isNgTemplate } from "@angular/compiler";
+import { addMatchers } from "src/app/selectors";
 
 @Component({
 	selector: "app-inputs",
@@ -19,6 +19,7 @@ export class InputsComponent implements OnInit {
 	data = data as Songs[];
 	data$ = this.store.select((state) => state.database);
 	inputs = inputs as Songs[];
+	inputs$: Observable<Array<Songs>> | undefined;
 	artist: Songs[] = [];
 	title: Songs[] = [];
 	isrc: Songs[] = [];
@@ -31,6 +32,8 @@ export class InputsComponent implements OnInit {
 
 	ngOnInit() {
 		/* console.log(this.data, this.inputs); */
+		this.inputs$ = this.store.select((state) => state.inputs);
+		/* this.inputs$ = this.store.select(addMatchers(true)); */
 		this.startSearch();
 	}
 
@@ -41,8 +44,8 @@ export class InputsComponent implements OnInit {
 
 	startSearch() {
 		this.showArtist();
-		/* 	this.showTitle();
-		this.showISRC();
+		/* this.showTitle(); */
+		/* 	this.showISRC();
 		this.showDuration(); */
 		console.log("artistList", this.artist);
 	}
@@ -62,15 +65,9 @@ export class InputsComponent implements OnInit {
 
 	showArtist() {
 		this.artist = [];
-		this.inputs.map((item) => {
-			this.data$.subscribe((el) => {
-				if (el.find((a) => a.artist === item.artist)) {
-					this.artist.push(item);
-					this.checkedArtist && (item.matchesArtist = true);
-				}
-			});
+		this.inputs$?.subscribe((song) => {
+			song.map((song) => console.log(song.artist));
 		});
-		console.log("this.inputs", this.inputs);
 	}
 
 	/* 	showArtist() {
@@ -84,7 +81,6 @@ export class InputsComponent implements OnInit {
 	} */
 
 	addToDB(item: Songs) {
-		console.log(item);
 		this.store.dispatch(addInput({ song: item }));
 		let snackBarRef = this.snackBar.open(`${item.artist} "${item.title}" - added to Database`, "Undo this action", {
 			duration: 6000,
@@ -97,12 +93,14 @@ export class InputsComponent implements OnInit {
 
 	showTitle() {
 		this.title = [];
-		this.inputs.map((item) => {
+		let copyArray = [...this.inputs];
+		copyArray.map((item, i) => {
 			if (this.data.find((a) => a.title === item.title)) {
 				this.title.push(item);
 				this.checkedTitle && (item.matchesTitle = true);
 			}
 		});
+		this.inputs = copyArray;
 	}
 
 	showISRC() {
@@ -131,11 +129,13 @@ export class InputsComponent implements OnInit {
 
 	toggleArtist() {
 		if (!this.checkedArtist) {
-			this.inputs.map((item) => {
+			let copyArray = [...this.inputs];
+			copyArray.map((item) => {
 				item.matchesArtist = false;
 			});
+			this.inputs = copyArray;
 		} else {
-			this.showArtist();
+			/* this.showArtist(); */
 		}
 	}
 
