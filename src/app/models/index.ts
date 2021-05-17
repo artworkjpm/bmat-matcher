@@ -1,4 +1,5 @@
 export interface Songs {
+	[filterBy: string]: any;
 	artist: string;
 	title: string;
 	isrc: string;

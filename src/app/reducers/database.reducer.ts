@@ -6,8 +6,13 @@ import { data } from "../../assets/csv/sound-recordings";
 const initialState = data as Songs[];
 
 export const searchReducer = createReducer(
-	"",
-	on(saveSearchText, (state, { text }) => text)
+	{ text: "", field: "" },
+	on(saveSearchText, (state, { text, field }) => {
+		return {
+			text,
+			field,
+		};
+	})
 );
 
 export const dataReducer = createReducer<Songs[]>(

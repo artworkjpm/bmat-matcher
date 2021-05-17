@@ -9,6 +9,7 @@ import { AppState } from "src/app/app.state";
 	styleUrls: ["./search.component.scss"],
 })
 export class SearchComponent implements OnInit {
+	selectedValue = "artist";
 	searchText = "";
 
 	constructor(private store: Store<AppState>) {}
@@ -16,6 +17,6 @@ export class SearchComponent implements OnInit {
 	ngOnInit(): void {}
 
 	filterTable() {
-		this.store.dispatch(saveSearchText({ text: this.searchText }));
+		this.store.dispatch(saveSearchText({ text: this.searchText, field: this.selectedValue }));
 	}
 }

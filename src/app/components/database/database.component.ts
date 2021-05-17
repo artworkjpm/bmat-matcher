@@ -23,7 +23,7 @@ export class DatabaseComponent implements OnInit {
 	}
 	ngOnInit() {
 		this.searchText$.subscribe((item) => {
-			this.data$ = this.store.select(filterDataBase(item));
+			this.data$ = this.store.select(filterDataBase(item.text, item.field));
 		});
 	}
 }

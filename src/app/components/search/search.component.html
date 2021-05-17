@@ -1,3 +1,17 @@
-<mat-form-field class="example-full-width">
-	<input matInput placeholder="Search Song..." [(ngModel)]="searchText" (input)="filterTable()" />
+<mat-form-field>
+	<mat-label>Search by...</mat-label>
+	<mat-select [(ngModel)]="selectedValue" (selectionChange)="filterTable()">
+		<mat-option value="artist" selected>Artist</mat-option>
+		<mat-option value="title">Title</mat-option>
+		<mat-option value="isrc">ISRC</mat-option>
+		<mat-option value="duration">Duration</mat-option>
+	</mat-select>
+</mat-form-field>
+
+<mat-form-field class="right-search">
+	<mat-label>Search {{ selectedValue }}...</mat-label>
+	<input matInput [(ngModel)]="searchText" (input)="filterTable()" />
+	<button mat-button *ngIf="searchText" matSuffix mat-icon-button aria-label="Clear" (click)="searchText = ''; filterTable()">
+		<mat-icon>close</mat-icon>
+	</button>
 </mat-form-field>
