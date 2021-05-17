@@ -19,16 +19,17 @@ import { SearchComponent } from "./components/search/search.component";
 import { StoreModule } from "@ngrx/store";
 import { dataReducer, searchReducer } from "./reducers/database.reducer";
 import { StoreDevtoolsModule } from "@ngrx/store-devtools";
+import { inputsReducer } from "./reducers/inputs.reducer";
 
 @NgModule({
 	declarations: [AppComponent, TopNavComponent, AboutAppComponent, AboutMeComponent, DatabaseComponent, UploaderComponent, InputsComponent, HomeComponent, SearchComponent],
 	imports: [
 		BrowserModule,
 		AppRoutingModule,
-
 		StoreModule.forRoot({
 			database: dataReducer,
 			searchText: searchReducer,
+			inputs: inputsReducer,
 		}),
 		StoreDevtoolsModule.instrument(),
 		MaterialModule,

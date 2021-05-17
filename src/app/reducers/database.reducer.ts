@@ -1,13 +1,18 @@
 import { Songs } from "../models/index";
 import { createReducer, on } from "@ngrx/store";
-import { addInput, filterTable, removeData, removeLastItemAdded, saveSearchText } from "../actions/data.actions";
+import { addInput, filterTableComplete, removeData, removeLastItemAdded, saveSearchText } from "../actions/data.actions";
 import { data } from "../../assets/csv/sound-recordings";
 
 const initialState = data as Songs[];
 
 export const searchReducer = createReducer(
-	{ text: "" },
-	on(saveSearchText, (state, { text }) => ({ ...state, text }))
+	{ text: "", field: "" },
+	on(saveSearchText, (state, { text, field }) => {
+		return {
+			text,
+			field,
+		};
+	})
 );
 
 export const dataReducer = createReducer<Songs[]>(
@@ -17,18 +22,18 @@ export const dataReducer = createReducer<Songs[]>(
 		array.splice(index, 1);
 		return array;
 	}),
-	on(addInput, (state, action) =>
-		state.concat({
+	on(addInput, (state, action) => {
+		return state.concat({
 			...action.song,
-		})
-	),
+		});
+	}),
 	on(removeLastItemAdded, (state) => {
 		const array = [...state];
 		array.pop();
 		return array;
 	}),
-	on(filterTable, (state, action) => {
+
+	on(filterTableComplete, (state) => {
 		return state;
-		/* return action.text ? state.filter((item) => item.artist.toLowerCase().includes(action.text.toLowerCase())) : (data as Songs[]); */
 	})
 );

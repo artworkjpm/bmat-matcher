@@ -9,9 +9,21 @@
 	margin-top: 20px;
 }
 
+h2.text-desc {
+	margin-bottom: 5px;
+}
+
+section {
+	margin-bottom: 20px;
+}
+
 table {
 	border-collapse: collapse;
 	width: 100%;
+}
+
+th {
+	white-space: nowrap;
 }
 
 th,
@@ -97,4 +109,9 @@ td {
 
 ::ng-deep .lightOrangeChecked.mat-checkbox:not(.mat-checkbox-disabled) .mat-checkbox-ripple .mat-ripple-element {
 	background-color: #ffb93a !important;
+}
+
+.text-icon {
+	position: relative;
+	top: 7px;
 }

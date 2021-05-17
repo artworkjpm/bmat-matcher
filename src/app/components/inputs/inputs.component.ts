@@ -2,10 +2,11 @@ import { Component, OnInit } from "@angular/core";
 import { Songs } from "src/app/models";
 import { data } from "../../../assets/csv/sound-recordings";
 import { inputs } from "../../../assets/csv/sound-inputs";
-import { select, Store } from "@ngrx/store";
+import { Store } from "@ngrx/store";
 import { AppState } from "src/app/app.state";
 import { addInput, removeLastItemAdded } from "src/app/actions/data.actions";
 import { MatSnackBar } from "@angular/material/snack-bar";
+import { removeInput } from "src/app/actions/inputs.actions";
 
 @Component({
 	selector: "app-inputs",
@@ -14,11 +15,13 @@ import { MatSnackBar } from "@angular/material/snack-bar";
 })
 export class InputsComponent implements OnInit {
 	data = data as Songs[];
+	data$ = this.store.select((state) => state.database);
 	inputs = inputs as Songs[];
-	artist: Songs[] = [];
-	title: Songs[] = [];
-	isrc: Songs[] = [];
-	duration: Songs[] = [];
+	inputs$ = this.store.select((state) => state.inputs);
+	artist: number[] = [];
+	title: number[] = [];
+	isrc: number[] = [];
+	duration: number[] = [];
 	checkedArtist = true;
 	checkedTitle = true;
 	checkedISRC = true;
@@ -26,109 +29,48 @@ export class InputsComponent implements OnInit {
 	constructor(private store: Store<AppState>, private snackBar: MatSnackBar) {}
 
 	ngOnInit() {
-		console.log(this.data, this.inputs);
-		this.startSearch();
+		this.startMatchChecker();
+		this.data$.subscribe(() => this.startMatchChecker());
 	}
 
 	remove(index: number) {
-		this.inputs.splice(index, 1);
-		this.startSearch();
+		this.store.dispatch(removeInput({ index }));
+		this.startMatchChecker();
 	}
 
-	startSearch() {
-		this.showArtist();
-		this.showTitle();
-		this.showISRC();
-		this.showDuration();
-		console.log(this.artist);
-	}
-
-	showArtist() {
+	startMatchChecker() {
 		this.artist = [];
-		this.inputs.map((item) => {
-			if (this.data.find((a) => a.artist === item.artist)) {
-				this.artist.push(item);
-				this.checkedArtist && (item.matchesArtist = true);
-			}
-		});
-	}
-
-	showTitle() {
 		this.title = [];
-		this.inputs.map((item) => {
-			if (this.data.find((a) => a.title === item.title)) {
-				this.title.push(item);
-				this.checkedTitle && (item.matchesTitle = true);
-			}
-		});
-	}
-
-	showISRC() {
 		this.isrc = [];
-		this.inputs.map((item) => {
-			if (item.isrc.length > 0) {
-				if (this.data.find((a) => a.isrc === item.isrc)) {
-					this.isrc.push(item);
-					this.checkedISRC && (item.matchesISRC = true);
-				}
-			}
-		});
-	}
-
-	showDuration() {
 		this.duration = [];
-		this.inputs.map((item) => {
-			if (item.duration) {
-				if (this.data.find((a) => a.duration === item.duration)) {
-					this.duration.push(item);
-					this.checkedDuration && (item.matchesDuration = true);
-				}
-			}
+
+		this.inputs$.subscribe((song) => {
+			song.map((song, i) =>
+				this.data$.subscribe((data) =>
+					data.map((item) => {
+						if (song.artist && song.artist === item.artist) {
+							this.artist.push(i);
+							this.artist = [...new Set(this.artist)];
+						}
+						if (song.title && song.title === item.title) {
+							this.title.push(i);
+							this.title = [...new Set(this.title)];
+						}
+						if (song.isrc && song.isrc === item.isrc) {
+							this.isrc.push(i);
+							this.isrc = [...new Set(this.isrc)];
+						}
+						if (song.duration && song.duration === item.duration) {
+							this.duration.push(i);
+							this.duration = [...new Set(this.duration)];
+						}
+					})
+				)
+			);
 		});
-	}
-
-	toggleArtist() {
-		if (!this.checkedArtist) {
-			this.inputs.map((item) => {
-				item.matchesArtist = false;
-			});
-		} else {
-			this.showArtist();
-		}
-	}
-
-	toggleTitle() {
-		if (!this.checkedTitle) {
-			this.inputs.map((item) => {
-				item.matchesTitle = false;
-			});
-		} else {
-			this.showTitle();
-		}
-	}
-
-	toggleISRC() {
-		if (!this.checkedISRC) {
-			this.inputs.map((item) => {
-				item.matchesISRC = false;
-			});
-		} else {
-			this.showISRC();
-		}
-	}
-
-	toggleDuration() {
-		if (!this.checkedDuration) {
-			this.inputs.map((item) => {
-				item.matchesDuration = false;
-			});
-		} else {
-			this.showDuration();
-		}
 	}
 
 	addToDB(item: Songs) {
-		console.log(item);
 		this.store.dispatch(addInput({ song: item }));
 		let snackBarRef = this.snackBar.open(`${item.artist} "${item.title}" - added to Database`, "Undo this action", {
 			duration: 6000,
