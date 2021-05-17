@@ -1,35 +1,58 @@
-<h2>About this app:</h2>
-<ul>
-  <li>
-    First problem I had was this error message about CORS:
-    <code>
-      No 'Access-Control-Allow-Origin' header is present on the requested
-      resource.</code
-    >
-    > I managed to get around that by using a <code>proxy.conf.json</code> file,
-    NICE!
-  </li>
-  <li>Run the app locally using `npm start`</li>
-  <li>
-    <b>Unit tests:</b><br />
-    My main unit tests are for the
-    <b>ApiService </b> - check GET request for url, favItems array ADD and
-    REMOVE, <b>ItemsComponent</b> - should paginate in sections of 5 ,
-    <b>FavIconComponent </b> - should return false if dummyItem is not in
-    dummyFavItems (to control the styling of the heart icon)
-  </li>
-</ul>
+<h2>About this test:</h2>
+<p>At first I found the description was quite abstract but I managed to interpret an idea to have two data tables showing and one table to check if their values match each other.</p>
+<p>First thing I built was a component to actually convert the csv to json as I thought this would be required, but after an email to clarify that wasn't needed I just converted the csv to json and started work. The page is split into <b>Sound Inputs Table</b> and <b>Sound Recordings Database Table</b>, details below:</p>
+<section>
+	<mat-accordion>
+		<mat-expansion-panel>
+			<mat-expansion-panel-header>
+				<mat-panel-title>Part 1: Matching candidates</mat-panel-title>
+			</mat-expansion-panel-header>
+			<p>
+				I considered making the app the search and show each item in the inputs json but I thought that would be tedius for the user to check each item one by one, so I simply created a table that shows matches with coloured cells. I match the values to the main database table, if there is match I save that index to an array, then I see if that index matches current index, if yes, it adds class
+				style to change that color. Those styles have a toggle tick box, just to be more interactive.
+			</p>
+			<h4>How would I improve the matching?</h4>
+			<ul>
+				<li>Add an edit feature to edit the input and database records</li>
+				<li>If we had access to the sound audio file, play the sound audio</li>
+			</ul>
+		</mat-expansion-panel>
+	</mat-accordion>
+</section>
+
+<section>
+	<mat-accordion>
+		<mat-expansion-panel>
+			<mat-expansion-panel-header>
+				<mat-panel-title>Part 2: Search the whole database</mat-panel-title>
+			</mat-expansion-panel-header>
+			<p>I am using <b>ngrx</b> to save the json files to the state, I had to create a <b>createSelector()</b> function to filter the state based on the type event in the input</p>
+			<h4>How would I improve the search?</h4>
+			<ul>
+				<li>Add validation to the Duration field to only accept numbers</li>
+				<li>Consider using a buffer so there is a pause before the search function runs, this helps if we are doing an api call in each typed input</li>
+			</ul>
+		</mat-expansion-panel>
+	</mat-accordion>
+</section>
+
+<section>
+	<mat-accordion>
+		<mat-expansion-panel>
+			<mat-expansion-panel-header>
+				<mat-panel-title>Part 3: Create a new sound recording in the database</mat-panel-title>
+			</mat-expansion-panel-header>
+			<p>In the Inputs table I just created a button to <b>Add to the DB</b>, this then fires a function that adds that records. With the help of <b>ngrx</b>, I am able to subscibe to changes to the database and immediately update the Inputs Table match color styling.</p>
+			<h4>How would I improve this?</h4>
+			<ul>
+				<li>Add a feature to create a fresh Sound record from scratch, like a button with "Add new record", which opens a dialog with a small form.</li>
+			</ul>
+		</mat-expansion-panel>
+	</mat-accordion>
+</section>
 
 <h2>Things to impress:</h2>
 <ul>
-  <li>I added "lowest" and "highest" price filter</li>
-  <li>
-    The app is mobile responsive, show/hiding a dropdown component for the
-    search component on mobile
-  </li>
-  <li>
-    The app doesn't use a complicated state management, like ngrx or redux,
-    although they are very good. I simply save the state in the
-    <b>ApiService</b>
-  </li>
+	<li>Using <b>NGRX</b>, which is tricky to understant at first, simple things can become hard when we deal with immutable state and pure functions!</li>
+	<li>The undo feature on <b>Add to DB</b>, you will see a snackbar component open up and you can undo that action.</li>
 </ul>
